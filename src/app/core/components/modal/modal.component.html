@@ -1,0 +1,11 @@
+<div class="modal-backdrop" (click)="close()"></div>
+
+<div class="modal" [style.border]="'0.3em solid ' + borderColor">
+    <button class="modal__close" (click)="close()">x</button>
+
+    <div class="modal__content">
+        <div class="modal__scroll-wrapper">
+            <ng-template #viewContainer></ng-template>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,181 @@
+@if (!loading) {
+    <div
+        class="container"
+    >
+        <div class="profile">
+            <img
+                [src]="character.image"
+                [alt]="character.name"
+                class="profile__image"
+                [ngClass]="{
+                    'profile__image--alive-border': character.status === 'Alive',
+                    'profile__image--dead-border': character.status === 'Dead',
+                    'profile__image--unknown-border': character.status === 'unknown',
+                }"
+            />
+            <h1
+                class="profile__name"
+                [ngClass]="{
+                    'profile__name--alive': character.status === 'Alive',
+                    'profile__name--dead': character.status === 'Dead',
+                    'profile__name--unknown': character.status === 'unknown',
+                }"
+            >
+                {{ character.name }}
+            </h1>
+        </div>
+
+        <h3 class="container__title">Information</h3>
+        <div class="info">
+            <div
+                class="info__card"
+                [ngClass]="{
+                    'info__card--alive-border': character.status === 'Alive',
+                    'info__card--dead-border': character.status === 'Dead',
+                    'info__card--unknown-border': character.status === 'unknown',
+                }"
+            >
+                <div
+                    [ngStyle]="{
+                        'background-image':
+                            'url(assets/images/' +
+                            (character.status === 'Alive'
+                                ? 'alive_status.svg'
+                                : character.status === 'Dead'
+                                  ? 'dead_status.svg'
+                                  : 'unknown_status.svg') +
+                            ')',
+                    }"
+                    class="info__card--background"
+                ></div>
+                <span
+                    class="info__card--title"
+                    [ngClass]="{
+                        'info__card--title--alive': character.status === 'Alive',
+                        'info__card--title--dead': character.status === 'Dead',
+                        'info__card--title--unknown': character.status === 'unknown',
+                    }"
+                    >Status</span
+                >
+                <span
+                    class="info__card--description"
+                    [ngClass]="{
+                        'info__card--description--alive': character.status === 'Alive',
+                        'info__card--description--dead': character.status === 'Dead',
+                        'info__card--description--unknown': character.status === 'unknown',
+                    }"
+                    >{{ character.status }}</span
+                >
+            </div>
+
+            <div class="info__card">
+                <div
+                    [ngStyle]="{
+                        'background-image': 'url(assets/images/species.svg)',
+                    }"
+                    class="info__card--background"
+                ></div>
+                <span class="info__card--title">Species</span>
+                <span class="info__card--description">{{ character.species }}</span>
+            </div>
+
+            <div class="info__card">
+                <div
+                    [ngStyle]="{
+                        'background-image': 'url(assets/images/gender.svg)',
+                    }"
+                    class="info__card--background"
+                ></div>
+                <span class="info__card--title">Gender</span>
+                <span class="info__card--description">{{ character.gender }}</span>
+            </div>
+
+            @if (location$ | async; as location) {
+                <div class="info__card">
+                    <div
+                        [ngStyle]="{
+                            'background-image': 'url(assets/images/location.svg)',
+                        }"
+                        class="info__card--background"
+                    ></div>
+                    <span class="info__card--title">Location</span>
+                    <span class="info__card--description">{{ location.name }}</span>
+                </div>
+            }
+
+            @if (origin$ | async; as origin) {
+                <div class="info__card">
+                    <div
+                        [ngStyle]="{
+                            'background-image': 'url(assets/images/origin.svg)',
+                        }"
+                        class="info__card--background"
+                    ></div>
+                    <span class="info__card--title">Origin</span>
+                    <span class="info__card--description">{{ origin.name }}</span>
+                </div>
+            }
+
+            <div class="info__card"  [ngClass]="{
+                    'info__card--alive-border': character.type,
+                    'info__card--unknown-border': character.type === '',
+                }">
+                <div
+                    [ngStyle]="{
+                        'background-image':
+                            'url(assets/images/' +
+                            (character.type ? 'type.svg' : 'unknown_status.svg') +
+                            ')',
+                    }"
+                    class="info__card--background"
+                ></div>
+                <span class="info__card--title" [ngClass]="{
+                    'info__card--title--alive': character.type,
+                    'info__card--title--unknown': character.type === '',
+                }">Type</span>
+                <span class="info__card--description" 
+                [ngClass]="{
+                    'info__card--description--alive': character.type,
+                    'info__card--description--unknown': character.type === '',
+                }">{{ character.type || 'Unkown' }}</span>
+            </div>
+        </div>
+
+        @if (episodes$ | async; as episodes) {
+            <h3 class="container__title">Episodes</h3>
+            <div class="episodes-container">
+                <button
+                    class="scroll-button scroll-button--left"
+                    [class.visible]="showLeftButton"
+                    (click)="scrollLeft()"
+                    type="button"
+                    aria-label="Scroll left"
+                >
+                    &#8249;
+                </button>
+
+                <div class="episodes" #episodesContainer (scroll)="onScroll()">
+                    @for (ep of episodes; track ep.id) {
+                        <div class="episodes__card">
+                            <div class="episodes__card--background"></div>
+                            <span class="episodes__card--episode">{{ ep.episode }}</span>
+                            <span class="episodes__card--name">{{ ep.name }}</span>
+                        </div>
+                    }
+                </div>
+
+                <button
+                    class="scroll-button scroll-button--right"
+                    [class.visible]="showRightButton"
+                    (click)="scrollRight()"
+                    type="button"
+                    aria-label="Scroll right"
+                >
+                    &#8250;
+                </button>
+            </div>
+        }
+    </div>
+} @else {
+    <div class="loading-spinner"></div>
+}

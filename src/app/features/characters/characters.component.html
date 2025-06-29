@@ -1,0 +1,106 @@
+<div class="content-wrapper">
+    <div class="filters">
+        <form [formGroup]="filterForm" (ngSubmit)="onFilterSubmit()">
+            <input type="text" formControlName="name" placeholder="Character name..." />
+            <select formControlName="status">
+                <option value="">Status</option>
+                <option value="alive">Alive</option>
+                <option value="dead">Dead</option>
+                <option value="unknown">Unknown</option>
+            </select>
+            <select formControlName="gender">
+                <option value="">Gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="genderless">Genderless</option>
+                <option value="unknown">Unknown</option>
+            </select>
+            <select formControlName="favourites">
+                <option value="">All</option>
+                <option value="favourites">Favourites</option>
+            </select>
+            <button type="submit">Apply Filter</button>
+            <button type="button" (click)="onClearFilter()" [disabled]="!isAnyFilterApplied">
+                Clear Filters
+            </button>
+        </form>
+    </div>
+    <div class="container" #list (scroll)="onScroll($event)">
+        @for (character of characters; track character.id) {
+            <div
+                class="card"
+                (click)="onCardClick(character)"
+                [ngClass]="{
+                    'card--alive-border': character.status === 'Alive',
+                    'card--dead-border': character.status === 'Dead',
+                    'card--unknown-border': character.status === 'unknown',
+                }"
+            >
+                <img [src]="character.image" [alt]="character.name" class="card-image" />
+                <div class="card-info">
+                    <div class="card-text">
+                        <div class="card-text__name-favourite">
+                            <h2 class="card-text__name-favourite--name">
+                                {{ character.name }}
+                            </h2>
+                            <img
+                                [src]="
+                                    favouriteService.isFavourite(character.id)
+                                        ? 'assets/images/heart_filled.svg'
+                                        : 'assets/images/heart.svg'
+                                "
+                                class="card-text__name-favourite--icon"
+                                (click)="onFavouriteClick($event, character.id, character.name)"
+                            />
+                        </div>
+                        <div class="card-text__species">
+                            <img
+                                src="assets/images/species.svg"
+                                [alt]="character.species"
+                                class="card-text__species--icon"
+                            />
+                            <span class="card-text__species--description">{{
+                                character.species
+                            }}</span>
+                        </div>
+
+                        <div class="card-text__location">
+                            <img
+                                src="assets/images/location.svg"
+                                [alt]="character.location.name"
+                                class="card-text__location--icon"
+                            />
+                            <span class="card-text__location--description">{{
+                                character.location.name
+                            }}</span>
+                        </div>
+
+                        <div class="card-text__status">
+                            <img
+                                [src]="
+                                    'assets/images/' +
+                                    (character.status === 'Alive'
+                                        ? 'alive_status.svg'
+                                        : character.status === 'Dead'
+                                          ? 'dead_status.svg'
+                                          : 'unknown_status.svg')
+                                "
+                                [alt]="character.status"
+                                class="card-text__status--icon"
+                            />
+                            <span class="card-text__status--description">{{
+                                character.status
+                            }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (!isLoading && characters.length === 0) {
+            <span>No results available...</span>
+        }
+    </div>
+    @if (isLoading) {
+        <div class="loading-spinner"></div>
+    }
+</div>

@@ -1,0 +1,316 @@
+@use '../../../styles/variables.scss' as *;
+@use 'sass:color';
+
+.content-wrapper {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .filters {
+        width: 100%;
+        max-width: calc(4 * (300px));
+        margin: 1rem 2rem 1rem 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 0.5rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 1rem;
+        border: 0.3rem solid $color-secondary;
+
+        form {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+
+            > * {
+                flex: 1;
+            }
+        }
+
+        input[type='text'],
+        select {
+            padding: 0.5rem 0.75rem;
+            border: 0.0625rem solid #ccc;
+            border-radius: 1rem;
+            font-size: 1rem;
+            font-family: inherit;
+            background-color: white;
+            color: $color-brown;
+            height: 2.25rem;
+            box-sizing: border-box;
+        }
+
+        input[type='text']:focus,
+        select:focus {
+            outline: none;
+            border-color: $color-primary;
+            box-shadow: 0 0 0 0.2rem rgba($color-primary, 1);
+        }
+
+        input[type='text']:hover,
+        select:hover {
+            border-color: $color-primary;
+        }
+
+        input[type='text']::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: 0.0625rem solid $color-primary;
+            border-radius: 1rem;
+            background-color: $color-primary;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            height: 2.25rem;
+            box-sizing: border-box;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: color.adjust($color-primary, $lightness: -10%);
+            border-color: color.adjust($color-primary, $lightness: -10%);
+        }
+
+        button[type='button'] {
+            background-color: $color-error;
+            border-color: $color-error;
+        }
+
+        button[type='button']:hover {
+            background-color: color.adjust($color-error, $lightness: -10%);
+            border-color: color.adjust($color-error, $lightness: -10%);
+        }
+
+        button:disabled {
+            background-color: #e9ecef;
+            border-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        button:disabled:hover {
+            background-color: #e9ecef;
+            border-color: #e9ecef;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1rem;
+            padding-right: 2rem;
+        }
+
+        @media (min-width: 1200px) {
+            max-width: calc(4 * (300px + 1rem));
+        }
+        @media (max-width: 1299px) and (min-width: 900px) {
+            max-width: calc(3 * (300px + 1rem));
+        }
+        @media (max-width: 980px) and (min-width: 600px) {
+            max-width: calc(2 * (300px));
+        }
+        @media (max-width: 669px) {
+            max-width: calc(1 * (300px - 1rem));
+        }
+
+        @media (max-width: 350px) {
+            max-width: calc(100vw - 2rem);
+            width: calc(100vw - 2rem);
+            margin: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                flex-direction: column;
+
+                > * {
+                    min-width: 100%;
+                }
+            }
+        }
+
+        @media (max-width: 212px) {
+            input[type='text'],
+            select {
+                font-size: 0.6rem;
+                padding: 0.5rem 0.25rem;
+            }
+            button {
+                font-size: 0.6rem;
+                padding: 0.5rem;
+            }
+        }
+    }
+
+    .container {
+        height: 100vh;
+        width: 100%;
+        overflow-y: auto;
+        display: grid;
+        gap: 1rem 1.5rem;
+        padding: 0rem;
+        justify-content: center;
+        align-content: start;
+
+        @media (min-width: 1200px) {
+            grid-template-columns: repeat(4, minmax(250px, 300px));
+        }
+
+        @media (max-width: 1299px) and (min-width: 900px) {
+            grid-template-columns: repeat(3, minmax(250px, 300px));
+        }
+
+        @media (max-width: 980px) and (min-width: 600px) {
+            grid-template-columns: repeat(2, minmax(250px, 300px));
+        }
+
+        @media (max-width: 669px) {
+            grid-template-columns: 1fr;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 300px;
+            max-height: 446.586px;
+            justify-self: center;
+
+            &--alive-border {
+                border: 0.3rem solid $color-primary;
+            }
+
+            &--dead-border {
+                border: 0.3rem solid $color-error;
+            }
+
+            &--unknown-border {
+                border: 0.3rem solid $color-secondary;
+            }
+
+            .card-image {
+                border-radius: 1.5rem;
+                padding: 0.5rem;
+                width: calc(100% - 1rem);
+            }
+
+            .card-info {
+                padding: 2px 16px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .card-text {
+                    width: 100%;
+
+                    &__name-favourite {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 0.5rem;
+
+                        &--name {
+                            font-family: 'RickAndMortyFont';
+                            color: $color-brown;
+                            line-height: 2rem;
+                            margin: 0;
+                            flex: 1;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
+                        &--icon {
+                            max-width: 2rem;
+                            align-items: flex-start;
+                        }
+                    }
+
+                    &__species {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    &__species {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.5rem 0;
+
+                        &--description {
+                            white-space: nowrap;
+                            color: $color-brown;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
+                        &--icon {
+                            max-width: 1.2rem;
+                        }
+                    }
+
+                    &__location {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.5rem 0;
+
+                        &--description {
+                            color: $color-brown;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
+                        &--icon {
+                            max-width: 1.2rem;
+                        }
+                    }
+
+                    &__status {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        padding: 0.5rem 0;
+
+                        &--description {
+                            color: $color-brown;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
+                        &--icon {
+                            max-width: 1.2rem;
+                        }
+                    }
+                }
+            }
+
+            @media (max-width: 350px) {
+                max-width: calc(100vw - 2rem);
+                width: calc(100vw - 2rem);
+            }
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+    }
+}
